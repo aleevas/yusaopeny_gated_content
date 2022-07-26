@@ -1,0 +1,5 @@
+openy_gc_auth_example:
+  js:
+    js/openy_gc_auth_example.js: {}
+  dependencies:
+    - core/jquery
