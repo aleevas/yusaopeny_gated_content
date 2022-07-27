@@ -80,8 +80,12 @@ class GCAuthReCliqueSSOUserLoginSubscriber implements EventSubscriberInterface {
           foreach ($permissions_mapping as $mapping) {
             $role = explode(':', $mapping);
             // Compare mapping roles with user membership.
-            if (isset($role[0]) && $role[0] == $user_membership && isset($role[1])) {
-              $active_roles[] = $role[1];
+            if (!empty($role[0]) && !empty($role[1])) {
+              $role_pattern = '/^(' . preg_replace('/[^\\\\](\*)/', '.*', $role[0]) . ')$/';
+              // If we hit a match add that to the active roles.
+              if (preg_match($role_pattern, $user_membership)) {
+                $active_roles[] = $role[1];
+              }
             }
           }
           if ($require_active && $user_membership && empty($active_roles)) {
