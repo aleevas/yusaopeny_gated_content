@@ -189,26 +189,50 @@ class RecliqueSSO extends GCIdentityProviderPluginBase {
       '#type' => 'url',
       '#title' => $this->t('Authorization server'),
       '#default_value' => $config['authorization_server'],
-      '#description' => $this->t('It is most likely "https://[association_slug].recliquecore.com", where association_slug should be provided from Reclique.'),
+      '#description' => $this->t('It is most likely "https://[association_slug].recliquecore.com", where association_slug should be provided from ReClique.'),
     ];
 
     $form['client_id'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Client Id'),
       '#default_value' => $config['client_id'],
-      '#description' => $this->t('Your Reclique client id.'),
+      '#description' => $this->t('Your ReClique client id.'),
     ];
 
     $form['client_secret'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Client Secret'),
       '#default_value' => $config['client_secret'],
-      '#description' => $this->t('Your Reclique client secret.'),
+      '#description' => $this->t('Your ReClique client secret.'),
+    ];
+
+    $form['error_not_found'] = [
+      '#title' => $this->t('Message for "not found" errors.'),
+      '#description' => $this->t('Message displayed when the user is not found in ReClique.'),
+      '#type' => 'textfield',
+      '#default_value' => $config['error_not_found'],
+      '#required' => FALSE,
+    ];
+
+    $form['error_access_denied'] = [
+      '#title' => $this->t('Message for "access denied" errors.'),
+      '#description' => $this->t('Message displayed when the user does not have privileges to Virtual Y.'),
+      '#type' => 'textfield',
+      '#default_value' => $config['error_access_denied'],
+      '#required' => FALSE,
+    ];
+
+    $form['error_invalid'] = [
+      '#title' => $this->t('Message for all other errors.'),
+      '#description' => $this->t('Message displayed for any other errors communicating with ReClique.'),
+      '#type' => 'textfield',
+      '#default_value' => $config['error_invalid'],
+      '#required' => FALSE,
     ];
 
     $form['error_accompanying_message'] = [
       '#title' => $this->t('Authentication error message'),
-      '#description' => $this->t('Message displayed to user when he failed to log in using this plugin.'),
+      '#description' => $this->t('Additional help displayed after all login failures.'),
       '#type' => 'textfield',
       '#default_value' => $config['error_accompanying_message'],
       '#required' => FALSE,
