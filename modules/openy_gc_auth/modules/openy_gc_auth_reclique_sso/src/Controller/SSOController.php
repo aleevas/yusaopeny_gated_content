@@ -145,7 +145,7 @@ class SSOController extends ControllerBase {
         ->prepareUserNameAndEmail($userData);
 
       // Authorize user (register, login, log, etc).
-      $this->gcUserAuthorizer->authorizeUser($name, $email);
+      $this->gcUserAuthorizer->authorizeUser($name, $email, (array) $userData);
 
       return new RedirectResponse($this->configOpenyGatedContent->get('virtual_y_url'));
     }
