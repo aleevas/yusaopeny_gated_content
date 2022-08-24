@@ -3,7 +3,7 @@
     "description": "Y USA Open Y Virtual Y Content",
     "type": "drupal-module",
     "require": {
-        "ycloudyusa/yusaopeny": "9.* || dev-9.x-2.x || dev-* || *-dev",
+        "ycloudyusa/yusaopeny": "9.* || dev-9.x-2.x || dev-* || core9.4-dev",
         "drupal/recurring_events": "2.0.0-rc2",
         "ymcatwincities/daxko_sso": "*",
         "drupal/jsonapi_image_styles": "^2.0.0",
