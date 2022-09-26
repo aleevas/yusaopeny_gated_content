@@ -113,7 +113,7 @@ class SSOController extends ControllerBase {
       return new RedirectResponse(
         URL::fromUserInput(
           $this->configOpenyGatedContent->get('virtual_y_login_url'),
-          ['query' => ['error' => '1']]
+          ['query' => ['error' => 'invalid']]
         )->toString()
       );
     }
@@ -124,7 +124,7 @@ class SSOController extends ControllerBase {
       return new RedirectResponse(
         URL::fromUserInput(
           $this->configOpenyGatedContent->get('virtual_y_login_url'),
-          ['query' => ['error' => '1']]
+          ['query' => ['error' => 'invalid']]
         )->toString()
       );
     }
@@ -135,7 +135,7 @@ class SSOController extends ControllerBase {
       return new RedirectResponse(
         URL::fromUserInput(
           $this->configOpenyGatedContent->get('virtual_y_login_url'),
-          ['query' => ['error' => '1']]
+          ['query' => ['error' => 'not_found']]
         )->toString()
       );
     }
@@ -149,8 +149,16 @@ class SSOController extends ControllerBase {
 
       return new RedirectResponse($this->configOpenyGatedContent->get('virtual_y_url'));
     }
+    if ($this->recliqueSSOClient->validateUserSubscription($userData) === FALSE) {
+      return new RedirectResponse(
+        URL::fromUserInput(
+          $this->configOpenyGatedContent->get('virtual_y_login_url'),
+          ['query' => ['error' => 'access_denied']]
+        )->toString()
+      );
+    }
 
-    // Redirect back to Virual Y login page.
+    // Redirect back to Virtual Y login page.
     return new RedirectResponse(
       URL::fromUserInput(
         $this->configOpenyGatedContent->get('virtual_y_login_url'),
