@@ -52,30 +52,6 @@ class LogSettingsForm extends ConfigFormBase {
         3600 => $this->t('1 hour'),
       ],
     ];
-    $form['app_settings']['archiver_enabled'] = [
-      '#title' => $this->t('Enable Log Archiver'),
-      '#type' => 'checkbox',
-      '#default_value' => $config->get('archiver_enabled'),
-    ];
-
-    $form['app_settings']['archiver_store_period'] = [
-      '#title' => $this->t('Default archiver store period of time (months)'),
-      '#type' => 'select',
-      '#options' => [
-        '' => $this->t('1 month'),
-        '2 months' => $this->t('2 months'),
-        '3 months' => $this->t('3 months'),
-        '6 months' => $this->t('6 months'),
-        '9 months' => $this->t('9 months'),
-        '12 months' => $this->t('12 months'),
-      ],
-      '#default_value' => $config->get('archiver_store_period'),
-      '#states' => [
-        'visible' => [
-          ':input[name="app_settings[archiver_enabled]"]' => ['checked' => true]
-        ]
-      ]
-    ];
 
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [
