@@ -195,7 +195,12 @@ class LogArchiver {
     $end_time = $end->getTimeStamp();
 
     if (!isset($start)) {
+      $archiver_period = $this->config->get('openy_gc_log.settings')->get('archiver_store_period') ?? '1 month';
       $start = clone $end;
+      if ($archiver_period !== '') {
+        $start->modify('-' . $archiver_period);
+      }
+
       $start->modify('first day of this month 00:00');
     }
     else {
