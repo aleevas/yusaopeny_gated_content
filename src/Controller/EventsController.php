@@ -8,6 +8,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\openy_gated_content\VirtualYAccessTrait;
+use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -140,10 +141,12 @@ class EventsController extends ControllerBase {
     $query->leftJoin('eventinstance_field_data', 'eifd', 'ei.id = eifd.id');
     $query->leftJoin('eventinstance__field_ls_title', 'eit', 'eit.entity_id = ei.id');
     $query->leftJoin('eventinstance__field_ls_host_name', 'eih', 'eih.entity_id = ei.id');
+    $query->leftJoin('eventinstance__field_gc_instructor_reference', 'eifir', 'eifir.entity_id = ei.id');
     $query->condition('eifd.type', $bundles, 'IN');
     $query->condition('eifd.status', 1);
     $query->leftJoin('eventseries_field_data', 'esfd', 'eifd.eventseries_id = esfd.id');
     $query->leftJoin('eventseries__field_ls_host_name', 'esh', 'esh.entity_id = esfd.id');
+    $query->leftJoin('eventseries__field_gc_instructor_reference', 'esfir', 'esfir.entity_id = esfd.id');
 
     if (!empty($vy_roles)) {
       $eifd_or_group = $query->orConditionGroup();
@@ -176,9 +179,11 @@ class EventsController extends ControllerBase {
     $query->fields('ei', ['id', 'type', 'uuid']);
     $query->fields('eit', ['field_ls_title_value']);
     $query->fields('eih', ['field_ls_host_name_value']);
+    $query->fields('eifir', ['field_gc_instructor_reference_target_id']);
     $query->fields('eifd', ['date__value', 'date__end_value']);
     $query->fields('esfd', ['title']);
     $query->fields('esh', ['field_ls_host_name_value']);
+    $query->fields('esfir', ['field_gc_instructor_reference_target_id']);
     $query->orderBy('eifd.date__value');
     $query->distinct(TRUE);
 
@@ -187,18 +192,31 @@ class EventsController extends ControllerBase {
     $instances = [];
     $timezone = new \DateTimeZone('UTC');
     foreach ($result as $item) {
-      $instances[] = [
+      $instance = [
         'type' => 'eventinstance',
         'bundle' => $item['type'],
         'id' => $item['id'],
         'uuid' => $item['uuid'],
         'title' => $item['field_ls_title_value'] ?: $item['title'],
         'host_name' => $item['field_ls_host_name_value'] ?: $item['esh_field_ls_host_name_value'],
+        'instructors' => ($item['field_gc_instructor_reference_target_id'] ?
+          // If the instance has an instructor, load and get its label.
+          [Term::load($item['field_gc_instructor_reference_target_id'])->label()] :
+          // If the series has an instructor, load and get its label.
+          $item['esfir_field_gc_instructor_reference_target_id']) ?
+          [Term::load($item['esfir_field_gc_instructor_reference_target_id'])->label()] :
+          [],
         'date' => [
           'value' => (new DrupalDateTime($item['date__value'], $timezone))->format('c'),
           'end_value' => (new DrupalDateTime($item['date__end_value'], $timezone))->format('c'),
         ],
       ];
+      // If the uuid of the instance is already in instances, then merge instructor values.
+      if ($pos = array_search($item['uuid'], array_column($instances, 'uuid'))) {
+        $instances[$pos]['instructors'] = array_unique([...$instances[$pos]['instructors'], ...$instance['instructors']]);
+      } else {
+        $instances[] = $instance;
+      }
     }
     return $instances;
   }
