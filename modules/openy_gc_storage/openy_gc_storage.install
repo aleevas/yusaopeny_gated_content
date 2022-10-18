@@ -334,3 +334,22 @@ function openy_gc_storage_update_8017() {
     'core.entity_view_display.node.gc_video.teaser',
   ]);
 }
+
+/**
+ * Update configs related to the entity reference field inheritance.
+ */
+function openy_gc_storage_update_8018() {
+  $config_dir = \Drupal::service('extension.list.module')->getPath('openy_gc_storage');
+  $config_dir .= '/config/install/';
+  // Update configuration.
+  $config_importer = \Drupal::service('openy_upgrade_tool.importer');
+  $config_importer->setDirectory($config_dir);
+  $config_importer->importConfigs([
+    'field_inheritance.field_inheritance.eventinstance_live_stream_category.yml',
+    'field_inheritance.field_inheritance.eventinstance_live_stream_equipment.yml',
+    'field_inheritance.field_inheritance.eventinstance_live_stream_instructor_reference.yml',
+    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_category.yml',
+    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_equipment.yml',
+    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_instructor_reference.yml',
+  ]);
+}
