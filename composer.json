@@ -34,6 +34,9 @@
             },
             "drupal/blazy": {
                 "[PRODDEV-484] An error occurs after admin indexes the data https://dgo.to/3252140": "https://git.drupalcode.org/project/blazy/-/merge_requests/6.diff"
+            },
+            "drupal/field_inheritance": {
+                "Field cardinality is not preserved on inheritance https://dgo.re/3316144": "https://git.drupalcode.org/project/field_inheritance/-/merge_requests/3.diff"
             }
         },
         "patches-ignore": {
