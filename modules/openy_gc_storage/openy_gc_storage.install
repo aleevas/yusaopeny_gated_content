@@ -345,11 +345,11 @@ function openy_gc_storage_update_8018() {
   $config_importer = \Drupal::service('openy_upgrade_tool.importer');
   $config_importer->setDirectory($config_dir);
   $config_importer->importConfigs([
-    'field_inheritance.field_inheritance.eventinstance_live_stream_category.yml',
-    'field_inheritance.field_inheritance.eventinstance_live_stream_equipment.yml',
-    'field_inheritance.field_inheritance.eventinstance_live_stream_instructor_reference.yml',
-    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_category.yml',
-    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_equipment.yml',
-    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_instructor_reference.yml',
+    'field_inheritance.field_inheritance.eventinstance_live_stream_category',
+    'field_inheritance.field_inheritance.eventinstance_live_stream_equipment',
+    'field_inheritance.field_inheritance.eventinstance_live_stream_instructor_reference',
+    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_category',
+    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_equipment',
+    'field_inheritance.field_inheritance.eventinstance_virtual_meeting_instructor_reference',
   ]);
 }
