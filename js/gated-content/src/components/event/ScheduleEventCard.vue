@@ -12,7 +12,7 @@
           {{ event.title }}
         </template>
       </div>
-      <div class="instructor" v-if="event.instructors.length">
+      <div class="instructor" v-if="event.instructors && event.instructors.length">
         {{ event.instructors.join(', ') }}
       </div>
       <div class="instructor" v-else-if="event.host_name">{{ event.host_name }}</div>
