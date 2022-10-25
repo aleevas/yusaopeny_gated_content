@@ -6,9 +6,9 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\openy_gated_content\VirtualYAccessTrait;
-use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,19 +35,30 @@ class EventsController extends ControllerBase {
   protected $moduleHandler;
 
   /**
+   * The entity type handler.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * The controller constructor.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
   public function __construct(
     Connection $connection,
-    ModuleHandlerInterface $module_handler
+    ModuleHandlerInterface $module_handler,
+    EntityTypeManagerInterface $entity_type_manager
   ) {
     $this->connection = $connection;
     $this->moduleHandler = $module_handler;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -56,7 +67,8 @@ class EventsController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('database'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -218,7 +230,7 @@ class EventsController extends ControllerBase {
   public function getInheritedFieldLabels(int $id, string $field): array
   {
     // Get the field values from the parent series.
-    $series_values = \Drupal::service('entity_type.manager')
+    $series_values = $this->entityTypeManager
       ->getStorage('eventinstance')
       ->load($id)
       ->eventseries_id
@@ -226,7 +238,7 @@ class EventsController extends ControllerBase {
       ->{$field}
       ->referencedEntities();
     // Get the field values from the instance.
-    $instance_values = \Drupal::service('entity_type.manager')
+    $instance_values = $this->entityTypeManager
       ->getStorage('eventinstance')
       ->load($id)
       ->{$field}
