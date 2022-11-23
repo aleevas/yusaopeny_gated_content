@@ -153,15 +153,11 @@ class Logger {
       case 'node':
         $metadata['entity_title'] = $entity->label();
         if ($log->get('entity_bundle')->value === 'gc_video') {
-          if (!empty($entity
-          ->field_gc_instructor_reference
-          ->getvalue())) {
+          if (!empty($entity->field_gc_instructor_reference->getvalue())) {
             $instructors = [];
-          foreach ($entity->get('field_gc_instructor_reference')
-          ->referencedEntities() as $instructorkey => $instructorvalue) {
-          $instructorName = $instructorvalue->get('name')
-          ->getvalue()[0]['value'];
-          $instructors[] = $instructorName;
+          foreach ($entity->get('field_gc_instructor_reference')->referencedEntities() as $instructorkey => $instructorvalue) {
+            $instructorName = $instructorvalue->get('name')->getvalue()[0]['value'];
+            $instructors[] = $instructorName;
           }
         }
         $metadata['entity_instructor_name'] = implode(", ", $instructors);
