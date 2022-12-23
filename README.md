@@ -26,7 +26,7 @@ See also the [video version of these instructions](https://youtu.be/vlqv4ly3iak)
  running.
 
 - Add this module to your codebase.
-  - via composer: `composer require ycloudyusa/yusayusaopeny_gated_content`
+  - via composer: `composer require ycloudyusa/yusaopeny_gated_content`
   - without composer: this is not recommended.
 - Enable the modules
    - Through the UI:
