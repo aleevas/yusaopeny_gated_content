@@ -26,7 +26,7 @@ See also the [video version of these instructions](https://youtu.be/vlqv4ly3iak)
  running.
 
 - Add this module to your codebase.
-  - via composer: `composer require ycloudyusa/yusayusaopeny_gated_content`
+  - via composer: `composer require ycloudyusa/yusaopeny_gated_content`
   - without composer: this is not recommended.
 - Enable the modules
    - Through the UI:
@@ -34,8 +34,7 @@ See also the [video version of these instructions](https://youtu.be/vlqv4ly3iak)
      - Check "Virtual Y Base", "Open Y Virtual YMCA Storage", and "Open Y
       Virtual YMCA Auth Example".
       - Install and say "yes" to add all required dependencies.
-   - Via drush: `drush en yusaopeny_gated_content
-    openy_gc_auth_example -y`
+   - Via drush: `drush en openy_gated_content openy_gc_auth_example -y`
 - Add at least one term in these vocabularies via **Structure** > **Taxonomies**
   - Virtual Y Category
   - Virtual Y Equipment
