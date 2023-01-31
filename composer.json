@@ -29,7 +29,7 @@
                 "[PRODDEV-240] Display search input field for the lily theme": "https://patch-diff.githubusercontent.com/raw/ymcatwincities/openy/pull/2420.patch"
             },
             "drupal/core": {
-                "Enable disabling tableselect element options https://dgo.re/2895352": "https://www.drupal.org/files/issues/2021-12-04/2895352-53.patch",
+                "Enable disabling tableselect element options https://dgo.re/2895352": "https://www.drupal.org/files/issues/2021-12-04/2895352-53.patch"
             },
             "drupal/field_inheritance": {
                 "Field cardinality is not preserved on inheritance https://dgo.re/3316144": "https://git.drupalcode.org/project/field_inheritance/-/merge_requests/3.diff"
