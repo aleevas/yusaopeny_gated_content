@@ -1,0 +1,8 @@
+uuid: 9acfcade-fd8e-4582-919e-35e05d0c1fb5
+langcode: en
+status: true
+dependencies: {  }
+id: gated_content
+label: 'Virtual Y Content'
+revision: 0
+description: 'A block to display Virtual Y Content paragraph.'

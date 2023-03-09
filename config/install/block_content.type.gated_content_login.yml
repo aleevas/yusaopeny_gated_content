@@ -1,0 +1,8 @@
+uuid: ea92592b-c757-4ae4-bf64-dc1485b29eff
+langcode: en
+status: true
+dependencies: {  }
+id: gated_content_login
+label: 'Virtual Y Content Login'
+revision: 0
+description: 'A block to display Virtual Y Content login paragraph.'

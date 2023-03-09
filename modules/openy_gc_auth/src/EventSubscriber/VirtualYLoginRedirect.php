@@ -99,7 +99,6 @@ class VirtualYLoginRedirect implements EventSubscriberInterface {
    *   The event triggered by the response.
    */
   public function checkForRedirect(KernelEvent $event) {
-
     $route_name = $this->currentRouteMatch->getRouteName();
     $config = $this->configFactory->get('openy_gated_content.settings');
 
@@ -107,12 +106,11 @@ class VirtualYLoginRedirect implements EventSubscriberInterface {
       case 'entity.node.canonical':
         /** @var \Drupal\node\NodeInterface $node */
         $node = $this->currentRouteMatch->getParameter('node');
-
         $currentUser = $this->currentUser;
 
         if (
           $currentUser->isAnonymous()
-          && $this->authManager->checkIfParagraphAtNode($node, 'gated_content')
+          && $this->authManager->gatedContentExists($node)
         ) {
           if (!empty($config->get('virtual_y_login_url'))) {
             $event->setResponse(new RedirectResponse($config->get('virtual_y_login_url')));
@@ -135,7 +133,7 @@ class VirtualYLoginRedirect implements EventSubscriberInterface {
 
         if (
           $currentUser->isAuthenticated()
-          && $this->authManager->checkIfParagraphAtNode($node, 'gated_content_login')
+          && $this->authManager->gatedContentLoginExists($node)
         ) {
           if (!empty($config->get('virtual_y_url'))) {
             $event->setResponse(new RedirectResponse($config->get('virtual_y_url')));
@@ -155,7 +153,6 @@ class VirtualYLoginRedirect implements EventSubscriberInterface {
             ]));
           }
         }
-
     }
   }
 
