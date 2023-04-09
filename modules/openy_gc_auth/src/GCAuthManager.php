@@ -45,56 +45,19 @@ class GCAuthManager {
   }
 
   /**
-   * Check if Paragraph or Block with id "gated_content" is present in the node.
+   * Check if the block exists in the layout.
    *
    * @param \Drupal\node\NodeInterface $node
-   *   Node to check the paragraph/block for.
+   *   Node to check the block for.
+   * @param string $block_id
+   *   The id of the block to check.
    *
    * @return bool
-   *   TRUE if paragraph or block with "gated_content" id exists.
+   *   TRUE if the block found. FALSE otherwise.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  public function gatedContentExists(NodeInterface $node):bool {
-    return $this->gatedContentParagraphBlockExists($node, "gated_content");
-  }
-
-  /**
-   * Check if Paragraph or Block with id "gated_content_login" is present.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   Node to check the paragraph/block for.
-   *
-   * @return bool
-   *   TRUE if paragraph/block with id "gated_content_login" exists.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
-   */
-  public function gatedContentLoginExists(NodeInterface $node):bool {
-    return $this->gatedContentParagraphBlockExists($node, "gated_content_login");
-  }
-
-  /**
-   * Helper method to determine if paragraph or block with given id exists.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   Node to check the existence of paragraph or block.
-   * @param string $id
-   *   The id of the block/paragraph.
-   *
-   * @return bool
-   *   TRUE if the paragraph or block exists.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
-   */
-  public function gatedContentParagraphBlockExists(NodeInterface $node, string $id):bool {
-    $result = $this->checkIfParagraphAtNode($node, $id);
-
-    // Paragraph is present. No need to check for block.
-    if ($result) {
-      return TRUE;
-    }
-
+  public function checkIfLayoutBlockExists(NodeInterface $node, string $block_id):bool {
     // The layout builder is not used, the block is not going to be found.
     if (!$this->moduleHandler->moduleExists('layout_builder')) {
       return FALSE;
@@ -111,15 +74,58 @@ class GCAuthManager {
       $section = $section['section'];
 
       foreach ($section->getComponents() as $component) {
-        // The block usually has id like "inline_block:gated_content".
-        if ($component->getPluginId() === "inline_block:$id") {
+        if ($component->getPluginId() === $block_id) {
           return TRUE;
         }
       }
     }
 
-    // Neither paragraph nor block are present if the code got to this point.
+    // If the code got to this point, the block wasn't found.
     return FALSE;
+  }
+
+  /**
+   * Check if "Gated Content" Paragraph or Block is present in the node.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to check the paragraph/block for.
+   *
+   * @return bool
+   *   TRUE if paragraph or block with "gated_content" id exists.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   */
+  public function gatedContentExists(NodeInterface $node):bool {
+    $result = $this->checkIfParagraphAtNode($node, 'gated_content');
+
+    // Paragraph is present. No need to check for block.
+    if ($result) {
+      return TRUE;
+    }
+
+    return $this->checkIfLayoutBlockExists($node, 'virtual_y_app');
+  }
+
+  /**
+   * Check if "Gated Content Login" Paragraph or Block is present in the node.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to check the paragraph/block for.
+   *
+   * @return bool
+   *   TRUE if paragraph/block with id "gated_content_login" exists.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   */
+  public function gatedContentLoginExists(NodeInterface $node):bool {
+    $result = $this->checkIfParagraphAtNode($node, 'gated_content_login');
+
+    // Paragraph is present. No need to check for block.
+    if ($result) {
+      return TRUE;
+    }
+
+    return $this->checkIfLayoutBlockExists($node, 'virtual_y_login');
   }
 
 }
