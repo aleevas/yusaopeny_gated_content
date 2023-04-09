@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: gated_content_login
-label: 'Virtual Y Content Login'
-revision: 0
-description: 'A block to display Virtual Y Content login paragraph.'

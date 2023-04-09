@@ -25,13 +25,6 @@ use Drupal\node\NodeInterface;
  */
 function openy_gated_content_theme() {
   return [
-    'paragraph__gated_content' => [
-      'base hook' => 'paragraph',
-      'variables' => [
-        'app_settings' => '',
-        'headline' => '',
-      ],
-    ],
     'paragraph__gated_content_login' => [
       'base hook' => 'paragraph',
       'variables' => [
@@ -39,7 +32,36 @@ function openy_gated_content_theme() {
         'auth_configuration' => '',
       ],
     ],
+    'gated_content_app' => [
+      'variables' => [
+        'headline' => '',
+        'app_settings' => '',
+      ],
+    ],
+    'gated_content_login' => [
+      'variables' => [
+        'auth_form' => [],
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_gated_content_login().
+ */
+function openy_gated_content_preprocess_gated_conten_login(&$variables) {
+  $variables['#cache']['tags'][] = 'config:openy_gated_content.settings';
+  $variables['#cache']['tags'][] = 'config:openy_gc_auth.settings';
+
+  $active_provider = \Drupal::config('openy_gc_auth.settings')->get('active_provider');
+  $identityProviderManager = \Drupal::service('plugin.manager.gc_identity_provider');
+  $plugin_definition = $identityProviderManager->getDefinition($active_provider, FALSE);
+  if (!$plugin_definition) {
+    return;
+  }
+
+  $plugin_instance = $identityProviderManager->createInstance($active_provider);
+  $variables['#cache']['tags'][] = 'config:' . $plugin_instance->getConfigName();
 }
 
 /**
