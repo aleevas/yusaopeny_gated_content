@@ -71,21 +71,15 @@ function openy_gated_content_preprocess_paragraph(&$variables) {
   if (!isset($variables['paragraph'])) {
     return;
   }
-  $paragraphs_list = ['gated_content', 'gated_content_login'];
-  if (!in_array($variables['paragraph']->getType(), $paragraphs_list)) {
+
+  // Target only gated content paragraph.
+  if ($variables['paragraph']->getType() != 'gated_content') {
     return;
   }
 
   $variables['#cache']['tags'][] = 'config:openy_gated_content.settings';
   $variables['#cache']['tags'][] = 'config:openy_gc_auth.settings';
-  $active_provider = \Drupal::config('openy_gc_auth.settings')->get('active_provider');
-  $identityProviderManager = \Drupal::service('plugin.manager.gc_identity_provider');
-  $plugin_definition = $identityProviderManager->getDefinition($active_provider, FALSE);
-  if (!$plugin_definition) {
-    return;
-  }
 
-  $plugin_instance = $identityProviderManager->createInstance($active_provider);
   $app_config = \Drupal::config('openy_gated_content.settings')->getOriginal();
 
   // Give ability for 3rd party modules to alter data for the js app.
@@ -93,36 +87,32 @@ function openy_gated_content_preprocess_paragraph(&$variables) {
 
   $variables['app_settings'] = json_encode($app_config);
 
-  if ($variables['paragraph']->getType() === 'gated_content') {
-    $backgroundImage = '';
-    if ($mediaImage = $variables['paragraph']->field_prgf_image->entity) {
-      $display_options = EntityViewDisplay::collectRenderDisplay($variables['paragraph'], 'default')
-        ->getComponent('field_prgf_image');
-      $image_style = \Drupal::service('entity_type.manager')->getStorage('image_style')
-        ->load($display_options['settings']['image_style']);
-      $backgroundImage = $image_style->buildUrl($mediaImage->field_media_image->entity->uri->value);
-    }
-
-    if (empty($backgroundImage)) {
-      $file = 'base://' . \Drupal::service('extension.list.module')->getPath('openy_gated_content') . '/assets/img/paragraph-headline.png';
-      $backgroundImage = Url::fromUri($file)->setAbsolute()->toString();
-    }
-
-    $headline = [
-      'title' => $variables['paragraph']->field_prgf_title->value,
-      'description' => $variables['paragraph']->field_prgf_description->value,
-      'backgroundImage' => $backgroundImage,
-    ];
-
-    if ($variables['paragraph']->field_prgf_link->title) {
-      $headline['linkText'] = $variables['paragraph']->field_prgf_link->title;
-      $headline['linkUrl'] = Url::fromUri($variables['paragraph']->field_prgf_link->uri)->toString();
-    }
-
-    $variables['headline'] = json_encode($headline);
+  $backgroundImage = '';
+  if ($mediaImage = $variables['paragraph']->field_prgf_image->entity) {
+    $display_options = EntityViewDisplay::collectRenderDisplay($variables['paragraph'], 'default')
+      ->getComponent('field_prgf_image');
+    $image_style = \Drupal::service('entity_type.manager')->getStorage('image_style')
+      ->load($display_options['settings']['image_style']);
+    $backgroundImage = $image_style->buildUrl($mediaImage->field_media_image->entity->uri->value);
   }
 
-  $variables['#cache']['tags'][] = 'config:' . $plugin_instance->getConfigName();
+  if (empty($backgroundImage)) {
+    $file = 'base://' . \Drupal::service('extension.list.module')->getPath('openy_gated_content') . '/assets/img/paragraph-headline.png';
+    $backgroundImage = Url::fromUri($file)->setAbsolute()->toString();
+  }
+
+  $headline = [
+    'title' => $variables['paragraph']->field_prgf_title->value,
+    'description' => $variables['paragraph']->field_prgf_description->value,
+    'backgroundImage' => $backgroundImage,
+  ];
+
+  if ($variables['paragraph']->field_prgf_link->title) {
+    $headline['linkText'] = $variables['paragraph']->field_prgf_link->title;
+    $headline['linkUrl'] = Url::fromUri($variables['paragraph']->field_prgf_link->uri)->toString();
+  }
+
+  $variables['headline'] = json_encode($headline);
 }
 
 /**
