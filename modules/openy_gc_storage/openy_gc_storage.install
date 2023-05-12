@@ -311,6 +311,21 @@ function openy_gc_storage_update_8016() {
  * Update/create configs related to Duration reference field.
  */
 function openy_gc_storage_update_8017() {
+  // Ensure duplicate content doesn't exist before creating the field.
+  $database = \Drupal::database();
+  $tables = [
+    'taxonomy_term__field_gc_duration_max',
+    'taxonomy_term__field_gc_duration_min',
+    'taxonomy_term_revision__field_gc_duration_max',
+    'taxonomy_term_revision__field_gc_duration_min',
+  ];
+
+  foreach ($tables as $table) {
+    if ($database->schema()->tableExists($table)) {
+      $database->truncate($table);
+    }
+  }
+
   $config_dir = \Drupal::service('extension.list.module')->getPath('openy_gc_storage');
   $config_dir .= '/config/install/';
   // Update configuration.
