@@ -25,6 +25,13 @@ use Drupal\node\NodeInterface;
  */
 function openy_gated_content_theme() {
   return [
+    'paragraph__gated_content' => [
+      'base hook' => 'paragraph',
+      'variables' => [
+        'app_settings' => '',
+        'headline' => '',
+      ],
+    ],
     'paragraph__gated_content_login' => [
       'base hook' => 'paragraph',
       'variables' => [
