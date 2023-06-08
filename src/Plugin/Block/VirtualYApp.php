@@ -3,6 +3,7 @@
 namespace Drupal\openy_gated_content\Plugin\Block;
 
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Url;
@@ -197,7 +198,9 @@ class VirtualYApp extends BlockBase implements ContainerFactoryPluginInterface {
       // The current field value could have been entered by a different user.
       // However, if it is inaccessible to the current user, do not display it
       // to them.
-      '#default_value' => $conf['link']['uri'] ?? '',
+      '#default_value' => !empty($conf['link']['uri'])
+        ? $this->getUriAsDisplayableString($conf['link']['uri'])
+        : NULL,
       '#element_validate' => [[LinkWidget::class, 'validateUriElement']],
       '#maxlength' => 2048,
       '#link_type' => LinkItemInterface::LINK_GENERIC,
@@ -251,7 +254,8 @@ class VirtualYApp extends BlockBase implements ContainerFactoryPluginInterface {
       'backgroundImage' => $background_image,
     ];
 
-    if (isset($block_config['link']['title'])) {
+    if (!empty($block_config['link']['title'])
+      && !empty($block_config['link']['uri'])) {
       $headline['linkText'] = $block_config['link']['title'];
       $headline['linkUrl'] = Url::fromUri($block_config['link']['uri'])->toString();
     }
@@ -263,4 +267,42 @@ class VirtualYApp extends BlockBase implements ContainerFactoryPluginInterface {
     ];
   }
 
+  /**
+   * Get an entity label if it was selected before.
+   *
+   * @param $uri
+   *   A URI string.
+   *
+   * @return string
+   *   A label of the entity.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function getUriAsDisplayableString($uri) {
+    $scheme = parse_url($uri, PHP_URL_SCHEME);
+    // By default, the displayable string is the URI.
+    $displayable_string = $uri;
+    // A different displayable string may be chosen in case of the 'internal:'
+    // or 'entity:' built-in schemes.
+    if ($scheme === 'internal') {
+      $uri_reference = explode(':', $uri, 2)[1];
+      $path = parse_url($uri, PHP_URL_PATH);
+      if ($path === '/') {
+        $uri_reference = '<front>' . substr($uri_reference, 1);
+      }
+      $displayable_string = $uri_reference;
+    }
+    elseif ($scheme === 'entity') {
+      [$entity_type, $entity_id] = explode('/', substr($uri, 7), 2);
+      // Show the 'entity:' URI as the entity autocomplete would.
+      if ($entity_type == 'node' && $entity = $this->entityTypeManager->getStorage($entity_type)->load($entity_id)) {
+        $displayable_string = EntityAutocomplete::getEntityLabels([$entity]);
+      }
+    }
+    elseif ($scheme === 'route') {
+      $displayable_string = ltrim($displayable_string, 'route:');
+    }
+    return $displayable_string;
+  }
 }
