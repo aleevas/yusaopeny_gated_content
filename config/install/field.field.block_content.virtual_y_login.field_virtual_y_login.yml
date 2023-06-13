@@ -14,7 +14,15 @@ label: 'Virtual Y Login'
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    plugin_id: virtual_y_login
+    plugin_configuration:
+      id: virtual_y_login
+      label: 'Virtual Y Login'
+      label_display: '0'
+      provider: openy_gc_auth
+    plugin_configuration_schema_id: block.settings.virtual_y_login
 default_value_callback: ''
 settings: {  }
 field_type: 'plugin:block'
