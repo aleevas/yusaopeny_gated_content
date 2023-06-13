@@ -1,0 +1,13 @@
+.block-inline-blockvirtual-y-app #gated-content {
+  padding-top: 0;
+}
+
+.block-inline-blockvirtual-y-app #gated-content .top-menu {
+  position: static;
+}
+
+@media (max-width: 991px) {
+  .block-inline-blockvirtual-y-app #gated-content {
+    padding-top: 0;
+  }
+}

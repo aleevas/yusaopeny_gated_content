@@ -27,6 +27,11 @@ openy_gated_content_styles:
   css:
     theme:
       assets/css/openy_gated_content.css: {}
+y_lb:
+  version: 0.1
+  css:
+    theme:
+      assets/css/y_lb.css: {}
 
 openy-rose-menu:
   version: 0.1

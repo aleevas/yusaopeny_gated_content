@@ -13,7 +13,7 @@ mode: default
 content:
   field_virtual_y_login:
     type: plugin_block_built
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 0
