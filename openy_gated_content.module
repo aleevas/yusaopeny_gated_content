@@ -50,6 +50,10 @@ function openy_gated_content_theme() {
         'auth_form' => [],
       ],
     ],
+    'block__virtual_y_app' => [
+      'base hook' => 'block',
+      'template' => 'block--virtual-y-app',
+    ]
   ];
 }
 
@@ -156,6 +160,10 @@ function openy_gated_content_preprocess_html(&$variables) {
         }
       }
     }
+
+    if ($node->hasField('layout_builder__layout')) {
+      $variables['#attached']['library'][] = 'openy_gated_content/y_lb';
+    }
   }
 }
 
@@ -223,6 +231,29 @@ function openy_gated_content_jsonapi_taxonomy_term_filter_access(EntityTypeInter
  * Implements hook_form_alter().
  */
 function openy_gated_content_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Blocks for LB.
+  if (in_array($form_id,
+    [
+      'layout_builder_add_block',
+      'layout_builder_update_block',
+    ]
+  )) {
+    /** @var \Drupal\layout_builder\Form\ConfigureBlockFormBase $form_object */
+    $form_object = $form_state->getFormObject();
+    $component = $form_object->getCurrentComponent();
+    $plugin = $component->getPlugin();
+    $block_id = $plugin->getDerivativeId() ?? $plugin->getBaseId();
+
+    if (in_array($block_id, ['virtual_y_app', 'virtual_y_login'])) {
+      // Hide title fields that related to inline block itself.
+      $form['settings']['admin_label']['#access'] = FALSE;
+      $form['settings']['label']['#access'] = FALSE;
+      $form['settings']['label_display']['#access'] = FALSE;
+      if (isset($form['settings']['block_form'])) {
+        $form['settings']['block_form']['#process'][] = '_virtual_y_inline_block_process';
+      }
+    }
+  }
   $event_series_forms = [
     'eventseries_live_stream_edit_form',
     'eventseries_virtual_meeting_edit_form',
@@ -609,3 +640,48 @@ function openy_gated_content_entity_delete(EntityInterface $entity) {
     ->getInstanceFromDefinition(VyFavoriteItemsManager::class)
     ->deleteRelatedFavoriteItems($entity);
 }
+
+
+/**
+ * Custom process callback for inline block elements.
+ *
+ * @param array $element
+ *   Element to process.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ *
+ * @return array
+ *   Processed element.
+ */
+function _virtual_y_inline_block_process(array $element, FormStateInterface $form_state) {
+  if (isset($element['field_virtual_y'])) {
+    $element['field_virtual_y']['widget']['#after_build'][] = '_virtual_y_select_block_field_after_build';
+  }
+  if (isset($element['field_virtual_y_login'])) {
+    $element['field_virtual_y_login']['widget']['#after_build'][] = '_virtual_y_select_block_field_after_build';
+  }
+  return $element;
+}
+
+/**
+ * Custom '#after_build' callback for field_block.
+ *
+ * @param array $element
+ *   Element to process.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ *
+ * @return array
+ *   Processed element.
+ */
+function _virtual_y_select_block_field_after_build($element, FormStateInterface $form_state) {
+  if (isset($element[0]['plugin_selector']['container'])) {
+    // Hide the select block field.
+    $element[0]['plugin_selector']['container']['select']['container']['#attributes']['class'][] = 'hidden';
+    // Override a text before edit the Virtual Y Content block settings.
+    $element[0]['plugin_selector']['container']['plugin_form']['admin_label']['#title'] = t('Please configure your Virtual Y App block.');
+    unset($element[0]['plugin_selector']['container']['plugin_form']['admin_label']['#plain_text']);
+  }
+  return $element;
+}
+
