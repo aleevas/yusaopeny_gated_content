@@ -556,7 +556,7 @@ function openy_gated_content_update_8027() {
   $config_importer = \Drupal::service('openy_upgrade_tool.importer');
   $config_importer->setDirectory($config_dir);
   $config_importer->importConfigs([
-    'field.storage.block_content.field_virtual_y_login',
+    'field.field.block_content.virtual_y_login.field_virtual_y_login',
     'core.entity_view_display.block_content.virtual_y_app.default',
     'core.entity_view_display.block_content.virtual_y_login.default',
   ]);
