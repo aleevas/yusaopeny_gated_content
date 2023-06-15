@@ -28,7 +28,7 @@ openy_gated_content_styles:
     theme:
       assets/css/openy_gated_content.css: {}
 y_lb:
-  version: 0.2
+  version: 0.3
   css:
     theme:
       assets/css/y_lb.css: {}
