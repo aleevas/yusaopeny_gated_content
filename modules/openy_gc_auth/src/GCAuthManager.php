@@ -74,7 +74,7 @@ class GCAuthManager {
       $section = $section['section'];
 
       foreach ($section->getComponents() as $component) {
-        if ($component->getPluginId() === $block_id) {
+        if (strpos($component->getPluginId(), $block_id) !== false) {
           return TRUE;
         }
       }
