@@ -40,6 +40,15 @@ function openy_gated_content_update_dependencies() {
     8022 => [
       'openy_txnm_color' => 8005,
     ],
+    8026 => [
+      'openy' => 8093,
+    ]
+  ];
+
+  $dependencies['openy'] = [
+    8093 => [
+      'recurring_events' => 8012,
+    ]
   ];
 
   return $dependencies;
