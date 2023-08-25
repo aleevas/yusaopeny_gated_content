@@ -87,7 +87,7 @@ export default {
     instructors() {
       return this.video.attributes.field_gc_instructor_reference.length
         ? this.video.attributes.field_gc_instructor_reference
-        : this.video.attributes.instructor_reference;
+        : this.video.attributes.instructor;
     },
     level() {
       return this.video.attributes.field_ls_level ?? this.video.attributes.level;
