@@ -18,7 +18,7 @@
       </div>
       <div
         class="instructor"
-        v-if="this.instructors.length"
+        v-if="this.instructors"
       >
         <SvgIcon icon="instructor-icon"></SvgIcon>
         {{ this.instructors.map(instructor => instructor.name).join(', ') }}
