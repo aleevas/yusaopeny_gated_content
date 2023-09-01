@@ -263,6 +263,7 @@ class LogArchiver {
     $query = $this->entityTypeManager
       ->getStorage('log_entity')
       ->getQuery()
+      ->accessCheck()
       ->condition('created', [$start_time, $end_time], 'BETWEEN')
       ->sort('created', 'ASC');
 
@@ -287,6 +288,7 @@ class LogArchiver {
   protected function loadActivityLogIdsByDateRange($start_time, $end_time) {
     $query = $this->entityTypeManager->getStorage('log_entity')
       ->getQuery()
+      ->accessCheck()
       ->condition('event_type', LogEntityInterface::EVENT_TYPE_USER_ACTIVITY)
       ->condition('created', [$start_time, $end_time], 'BETWEEN')
       ->sort('created', 'ASC');
@@ -546,6 +548,7 @@ class LogArchiver {
     $file_ids = $this->entityTypeManager
       ->getStorage('file')
       ->getQuery()
+      ->accessCheck()
       ->condition('filename', array_keys($this->preparedLogs), 'in')
       ->execute();
 
@@ -613,8 +616,12 @@ class LogArchiver {
     $this->logger->debug(
       'Virtual Y Logs processed into archive: %count entities (%activity_count activity).',
       [
-        '%count' => count($this->logEntities),
-        '%activity_count' => count($this->activityLogEntities),
+        '%count' => is_countable($this->logEntities)
+          ? count($this->logEntities)
+          : 0,
+        '%activity_count' => is_countable($this->activityLogEntities)
+          ? count($this->activityLogEntities)
+          : 0,
       ]
     );
 
