@@ -492,6 +492,7 @@ function openy_gated_content_taxonomy_term_gc_duration_validation(array &$form, 
 
   $query = $taxonomy_storage->getQuery()
     ->condition('vid', 'gc_duration')
+    ->accessCheck()
     ->range(0, 1)
     // "start-2"
     ->condition('field_gc_duration_min', $max[0]['value'], '<=')
