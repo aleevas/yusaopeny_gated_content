@@ -15,7 +15,7 @@
         "drupal/simple_recaptcha": "^1.0",
         "drupal/state_machine": "^1.4",
         "drupal/views_data_export": "^1.0",
-        "ycloudyusa/yusaopeny": "9.* || dev-* || dev-9.x-2.x || ^10",
+        "ycloudyusa/yusaopeny": "*",
         "ymcatwincities/daxko_sso": "*"
     },
     "minimum-stability": "dev",
