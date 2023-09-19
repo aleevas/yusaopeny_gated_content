@@ -2,11 +2,11 @@
   padding-top: 0;
 }
 
-.openy_carnation-based.virtual-ymca #gated-content {
+.openy_carnation-based.page-with-lb #gated-content {
   padding-top: 0;
 }
 
-.openy_carnation-based.virtual-ymca #gated-content .top-menu {
+.openy_carnation-based.page-with-lb #gated-content .top-menu {
   top: 142px;
   padding: 0 15px;
   left: 0;
@@ -19,7 +19,7 @@
   display: block;
 }
 
-.openy_carnation.virtual-ymca article .ws-header {
+.openy_carnation.page-with-lb article .ws-header {
   position: fixed;
   top: 0;
   left: 0;
@@ -28,19 +28,19 @@
   z-index: 101;
 }
 
-.openy_carnation-based.virtual-ymca #openy_alerts_app_header {
+.openy_carnation-based.page-with-lb #openy_alerts_app_header {
   margin-top: 216px;
 }
 
-.openy_carnation-based.virtual-ymca #gated-content .gated-content-schedule-page {
+.openy_carnation-based.page-with-lb #gated-content .gated-content-schedule-page {
   padding-top: 0 !important;
 }
 
-.openy_carnation-based.virtual-ymca #gated-content .gated-content-schedule-page .date-filter {
+.openy_carnation-based.page-with-lb #gated-content .gated-content-schedule-page .date-filter {
   position: sticky;
   top: 200px;
 }
-.openy_carnation-based.virtual-ymca #gated-content .gated-content-schedule-page .calendar .slot.dates {
+.openy_carnation-based.page-with-lb #gated-content .gated-content-schedule-page .calendar .slot.dates {
   position: static;
 }
 
