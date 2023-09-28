@@ -81,7 +81,7 @@
 
   &.toolbar-tray-open #gated-content {
     .top-menu {
-      @include carnation_median(top, calc(130px + 79px), calc(78px + 39px));
+      @include carnation_median(top, calc(130px + 79px) !important, calc(78px + 39px));
     }
 
     .date-filter {
