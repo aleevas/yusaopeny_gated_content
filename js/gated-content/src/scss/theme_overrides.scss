@@ -58,7 +58,7 @@
       padding-top: 0;
 
       .top-menu {
-        @include carnation_median(top, calc(130px + 40px), calc(78px + 39px));
+        @include carnation_median(top, calc(130px + 40px) !important, calc(78px + 39px));
       }
 
       .gated-content-schedule-page {
