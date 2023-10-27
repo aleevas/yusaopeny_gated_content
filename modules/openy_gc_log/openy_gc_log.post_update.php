@@ -14,6 +14,7 @@ function openy_gc_log_post_update_update_metadata(&$sandbox) {
   $storage = Drupal::entityTypeManager()->getStorage('log_entity');
   if (!isset($sandbox['max'])) {
     $query = $storage->getQuery()
+      ->accessCheck()
       ->condition('event_type', [
         LogEntityInterface::EVENT_TYPE_ENTITY_VIEW,
         LogEntityInterface::EVENT_TYPE_VIDEO_PLAYBACK_STARTED,
