@@ -191,7 +191,15 @@ export default {
         : this.video.attributes.media;
     },
     descriptionProcessed() {
-      return this.description ? this.description.processed : '';
+      // Handle D9 description fields.
+      if (typeof this.description === 'string') {
+        return this.description ? this.description.processed : '';
+      }
+      // Handle D10 description fields.
+      if (typeof this.description === 'object') {
+        return this.description ? this.description[0].processed : '';
+      }
+      return '';
     },
     event() {
       return {
