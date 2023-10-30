@@ -52,7 +52,7 @@ alerts:
     assets/js/alerts.behaviors.js: { minified: false }
 
 gated-content-vue:
-  version: 0.2
+  version: 0.3
   js:
     js/gated-content/dist/gated-content.umd.min.js: { minified: true }
   dependencies:
