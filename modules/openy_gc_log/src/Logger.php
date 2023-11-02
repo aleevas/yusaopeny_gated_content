@@ -95,7 +95,7 @@ class Logger {
     try {
       $interval = $this->configFactory->get('openy_gc_log.settings')->get('activity_granularity_interval');
       $query = $this->entityTypeManager->getStorage('log_entity')->getQuery();
-      $query->accessCheck();
+      $query->accessCheck(TRUE);
       $query->condition('uid', $user_id);
       $query->condition('event_type', LogEntityInterface::EVENT_TYPE_USER_ACTIVITY);
       $query->condition('changed', (new \DateTime("-$interval seconds"))->getTimestamp(), '>=');
