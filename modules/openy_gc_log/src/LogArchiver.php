@@ -263,7 +263,7 @@ class LogArchiver {
     $query = $this->entityTypeManager
       ->getStorage('log_entity')
       ->getQuery()
-      ->accessCheck()
+      ->accessCheck(TRUE)
       ->condition('created', [$start_time, $end_time], 'BETWEEN')
       ->sort('created', 'ASC');
 
@@ -288,7 +288,7 @@ class LogArchiver {
   protected function loadActivityLogIdsByDateRange($start_time, $end_time) {
     $query = $this->entityTypeManager->getStorage('log_entity')
       ->getQuery()
-      ->accessCheck()
+      ->accessCheck(TRUE)
       ->condition('event_type', LogEntityInterface::EVENT_TYPE_USER_ACTIVITY)
       ->condition('created', [$start_time, $end_time], 'BETWEEN')
       ->sort('created', 'ASC');
@@ -548,7 +548,7 @@ class LogArchiver {
     $file_ids = $this->entityTypeManager
       ->getStorage('file')
       ->getQuery()
-      ->accessCheck()
+      ->accessCheck(TRUE)
       ->condition('filename', array_keys($this->preparedLogs), 'in')
       ->execute();
 
