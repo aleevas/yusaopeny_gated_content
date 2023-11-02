@@ -75,7 +75,7 @@ function openy_gc_log_file_download($uri) {
   }
 
   return [
-    'Content-Type' => \Drupal::service('file.mime_type.guesser')->guess($uri),
+    'Content-Type' => \Drupal::service('file.mime_type.guesser')->guessMimeType($uri),
     'Content-Disposition' => 'inline',
   ];
 }
