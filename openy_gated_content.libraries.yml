@@ -11,7 +11,7 @@ openy_lily_styles:
       assets/css/openy_lily.css: {}
 
 openy_carnation_styles:
-  version: 0.2
+  version: 0.3
   css:
     theme:
       assets/css/openy_carnation.css: {}
