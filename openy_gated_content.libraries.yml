@@ -29,7 +29,7 @@ openy_gated_content_styles:
       assets/css/openy_gated_content.css: {}
 
 y_lb:
-  version: 0.4
+  version: 0.5
   js:
     assets/js/y_lb.behaviors.js: { minified: false }
   css:
