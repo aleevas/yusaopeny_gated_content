@@ -28,7 +28,8 @@
   z-index: 101;
 }
 
-.openy_carnation-based.page-with-lb #openy_alerts_app_header {
+.openy_carnation-based.page-with-lb.alerts #openy_alerts_app_header,
+.openy_carnation-based.page-with-lb:not(.alerts) #gated-content {
   margin-top: 216px;
 }
 
@@ -47,5 +48,8 @@
 @media (max-width: 991px) {
   #openy_alerts_app_header {
     margin-top: 189px;
+  }
+  .openy_carnation-based.page-with-lb:not(.alerts) #gated-content {
+    margin-top: 0;
   }
 }
