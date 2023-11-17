@@ -49,7 +49,4 @@
   #openy_alerts_app_header {
     margin-top: 189px;
   }
-  .openy_carnation-based.page-with-lb:not(.alerts) #gated-content {
-    margin-top: 0;
-  }
 }
