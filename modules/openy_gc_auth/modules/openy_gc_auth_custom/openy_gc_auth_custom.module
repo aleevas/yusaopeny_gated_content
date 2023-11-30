@@ -54,6 +54,7 @@ function _openy_gc_auth_custom_form_migration_execute_form_submit(array &$form, 
   $update = $form_state->getValue('update') ?? 0;
   $force = $form_state->getValue('force') ?? 0;
   $sync = $form_state->getValue('sync') ?? 0;
+  $sync = (bool) $sync;
 
   $migration = \Drupal::routeMatch()->getParameter('migration');
   if ($migration) {
