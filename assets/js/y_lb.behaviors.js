@@ -21,7 +21,7 @@
         let openyAlertsHeaderMarginTop = mobileHeaderTopHeight + virtualYheaderHeight + headerBottom;
         let virtualYheaderTopPosition= mobileHeaderTopHeight + headerBottom;
         virtualYheaderTopMenu.css('top', virtualYheaderTopPosition + 'px');
-        if (openyAlertsHeader) {
+        if (openyAlertsHeader && $('body').hasClass('alerts')) {
           openyAlertsHeader.css('margin-top', openyAlertsHeaderMarginTop + 'px');
         }
       }
