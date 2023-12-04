@@ -6,6 +6,7 @@ use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_tools\MigrateBatchExecutable as MigrateBatchExecutableBase;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 
 /**
  * Defines a migrate executable class for batch migrations through UI.
@@ -22,14 +23,14 @@ class MigrateBatchExecutable extends MigrateBatchExecutableBase {
    *
    * @var bool
    */
-  protected $syncSource = FALSE;
+  protected bool $syncSource = FALSE;
 
   /**
    * Plugin manager for migration plugins.
    *
    * @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface
    */
-  protected $migrationPluginManager;
+  protected MigrationPluginManagerInterface $migrationPluginManager;
 
   /**
    * {@inheritdoc}
@@ -51,7 +52,7 @@ class MigrateBatchExecutable extends MigrateBatchExecutableBase {
   /**
    * {@inheritdoc}
    */
-  public function batchImport() {
+  public function batchImport(): void {
     // Create the batch operations for each migration that needs to be executed.
     // This includes the migration for this executable, but also the dependent
     // migrations.
@@ -79,7 +80,7 @@ class MigrateBatchExecutable extends MigrateBatchExecutableBase {
   /**
    * {@inheritdoc}
    */
-  protected function batchOperations(array $migrations, $operation, array $options = []) {
+  protected function batchOperations(array $migrations, string $operation, array $options = []): array {
     $operations = [];
     foreach ($migrations as $migration) {
 
@@ -116,7 +117,7 @@ class MigrateBatchExecutable extends MigrateBatchExecutableBase {
   /**
    * {@inheritdoc}
    */
-  public static function batchProcessImport($migration_id, array $options, &$context) {
+  public static function batchProcessImport(string $migration_id, array $options, &$context): void {
     if (empty($context['sandbox'])) {
       $context['finished'] = 0;
       $context['sandbox'] = [];
@@ -204,7 +205,7 @@ class MigrateBatchExecutable extends MigrateBatchExecutableBase {
    * @param array $operations
    *   If $success is FALSE, contains the operations that remained unprocessed.
    */
-  public static function batchFinishedImport($success, array $results, array $operations) {
+  public static function batchFinishedImport(bool $success, array $results, array $operations): void {
     if ($success) {
       foreach ($results as $result) {
         $singular_message = "Processed 1 item (@created created, @updated updated, @failures failed, @ignored ignored) - done with '@name'";
