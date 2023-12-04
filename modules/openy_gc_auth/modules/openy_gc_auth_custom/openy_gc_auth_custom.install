@@ -70,7 +70,11 @@ function _openy_gc_auth_custom_update_user_permissions() {
     'restful post openy_gc_auth_custom',
     'restful post openy_gc_auth_custom_confirm',
   ];
+  $all_permissions = \Drupal::service('user.permissions')->getPermissions();
   foreach ($permissions as $permission) {
+    if (!isset($all_permissions[$permission])) {
+      continue;
+    }
     foreach ($roles as $role) {
       $role->grantPermission($permission);
       $role->save();
