@@ -187,13 +187,16 @@ export default {
       return link;
     },
     descriptionProcessed() {
-      // Handle D9 description fields.
-      if (typeof this.description === 'string') {
-        return this.description ? this.description.processed : '';
-      }
-      // Handle D10 description fields.
-      if (typeof this.description === 'object') {
-        return this.description ? this.description[0].processed : '';
+      // Check description is not empty.
+      if (this.description.length > 0) {
+        // Handle D9 description fields.
+        if (typeof this.description === 'string') {
+          return this.description ? this.description.processed : '';
+        }
+        // Handle D10 description fields.
+        if (typeof this.description === 'object') {
+          return this.description ? this.description[0].processed : '';
+        }
       }
       return '';
     },
