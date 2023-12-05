@@ -191,16 +191,26 @@ export default {
         : this.video.attributes.media;
     },
     descriptionProcessed() {
-      // Check description is not empty.
-      if (this.description.length > 0) {
-        // Handle D9 description fields.
-        if (typeof this.description === 'string') {
-          return this.description ? this.description.processed : '';
-        }
-        // Handle D10 description fields.
-        if (typeof this.description === 'object') {
-          return this.description ? this.description[0].processed : '';
-        }
+      // Handle D9 description fields.
+      if (typeof this.description === 'string') {
+        return this.description ? this.description.processed : '';
+      }
+      /*
+       D10 fields behave differently in a few situations...
+       For an event with no overrides, this.description will be an array of objects. We need
+       to get the first instance of this.description[].processed, but calling array indexes
+       directly (this.description[0]) could fail without checks.
+      */
+      if (Array.isArray(this.description) && this.description.length > 0) {
+        // Find the first object in this.description that has a `processed` key.
+        return this.description.find((e) => 'processed' in e).processed;
+      }
+      /*
+       For an event instance that overrides the series, this.description will be a single object,
+       so we can reference the processed text directly.
+      */
+      if (typeof this.description.processed === 'string') {
+        return this.description.processed;
       }
       return '';
     },
