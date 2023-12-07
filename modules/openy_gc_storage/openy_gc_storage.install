@@ -372,3 +372,10 @@ function openy_gc_storage_update_8018() {
     'field_inheritance.field_inheritance.eventinstance_virtual_meeting_instructor_reference',
   ]);
 }
+
+/**
+ * Add default value for creator_plugin option in Recurring Events Series config.
+ */
+function openy_gc_storage_update_9101() {
+  openy_gc_storage_update_8005();
+}
