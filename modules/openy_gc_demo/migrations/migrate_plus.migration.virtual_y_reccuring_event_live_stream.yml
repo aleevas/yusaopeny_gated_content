@@ -28,6 +28,7 @@ source:
       equipment: 8
       level: 4
       time: '8:00 am'
+      end_event_time: '8:15 am'
       duration: 900
     -
       id: 2
@@ -45,6 +46,7 @@ source:
       equipment: 8
       level: 2
       time: '11:00 am'
+      end_event_time: '11:45 am'
       duration: 2700
   ids:
     id:
@@ -123,6 +125,10 @@ process:
       plugin: date_timestamp
       to_format: 'Y-m-d\TH:i:s'
   'daily_recurring_date/time': time
+  'daily_recurring_date/end_time': end_event_time
+  'daily_recurring_date/duration_or_end_time':
+    - plugin: default_value
+      default_value: 'end_time'
   'daily_recurring_date/duration': duration
 destination:
   plugin: 'entity:eventseries'
