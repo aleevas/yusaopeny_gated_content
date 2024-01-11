@@ -4,4 +4,4 @@ auth_destination:
     js/auth.behaviors.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.cookie
+    - core/js-cookie
