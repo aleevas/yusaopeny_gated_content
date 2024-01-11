@@ -1,7 +1,7 @@
 auth_destination:
-  version: 0.1
+  version: 0.2
   js:
     js/auth.behaviors.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.cookie
+    - core/js-cookie

@@ -1,6 +1,7 @@
 openy_gc_auth_example:
-  version: 1.0
+  version: 1.1
   js:
     js/openy_gc_auth_example.js: { minified: false }
   dependencies:
     - core/jquery
+    - core/once
