@@ -6,8 +6,10 @@
 
   Drupal.behaviors.openy_gc_auth_example = {
     attach: function(context, settings) {
-      $(once('openy_gc_auth-data-autosubmit', 'input[data-autosubmit=1]'))
-        .form().submit();
+      if ($('.openy-gc-auth-example-login-form').find('.form-submit').attr('data-autosubmit') === '1') {
+        $(once('openy_gc_auth_example_form_autosubmit', '.openy-gc-auth-example-login-form', context))
+          .trigger( "submit" );
+      }
     }
   };
 
